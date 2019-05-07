@@ -1,0 +1,36 @@
+language: php
+
+php:
+- 7.1
+
+before_install:
+- mysql -e 'CREATE DATABASE stjulianas;'
+- openssl aes-256-cbc -K $encrypted_332f70ea9423_key -iv $encrypted_332f70ea9423_iv
+  -in st-julianas.pem.enc -out st-julianas.pem -d
+
+before_script:
+- cp wedding-planner/.env.travis wedding-planner/.env
+- composer install -d wedding-planner
+- npm install --prefix ./wedding-planner
+- npm run dev --prefix ./wedding-planner
+- php wedding-planner/artisan key:generate
+- php wedding-planner/artisan migrate
+
+script:
+- wedding-planner/vendor/bin/phpunit wedding-planner/tests
+
+after_success:
+- cp deploy.sh.dev deploy.sh
+- "./deploy.sh"
+
+services:
+- mysql
+
+notifications:
+  email: false
+  slack:
+    secure: MZQLAyIaDbs7fA5tluX5Du5OKF9vETxFbICaH4gpVJKW2GjsoKhMtJ9WKyK/cNxDi+PzoRwb8Wyi7JRi/CgCXFW4NicJh4SWFFCIeJ7MG4Xeclme+/gXfrWcHfKGt6I5tI/ALY8t/Qgm+9m4QJxamgK4tyahFlSX1FN8bxskrw+p7/ii5GqBW12/uiRz0cifqsh4OphxvGThov8jWb+RjjPGs6nquCnamPSNfK0CK5tVXvPGLIzlEgSp52F3wo4UcicKMYtyyou8w4X4sK8B8nb6fWn0qGSVKBkeEa4SiC+oeEmHpYkOenFeF63UpioEaBk5423RKMTiG7IcqsVJmdITiZNAljrNeLcp/q7pWQ8mwCDUzkY3QEqhuyE2zbkNRsE5lHeo+thRYh/OwN3zCwmch8r3myooDr8k/kE/19DCjr3XVqHCUyvfJcVe2+0QU7ghQZrQMOOl/bdQDiJs/cnFiFNvoGcI0il78S5i9yQIJnfXBY7U/5Yvn9HwVPeZPnAyZES5KWNRwcCWC6D+hoddk0NJ3D2j+tm983/wpGp7zRkIVow/IJd/nKC/yqVXzJlavSi3HlhFcJQYgGBBli2NG+T5ydH9VKf5moS+++3dYyOwTawwL6DLcwSWD1XMi8aDhVE8MnBiz9urhntjc92Au6+CHGFzSQgFBJ4zf4E=
+    
+branches:
+  only:
+  - master

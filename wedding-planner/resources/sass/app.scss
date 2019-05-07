@@ -1,0 +1,76 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Didact+Gothic');
+// Variables
+@import 'variables';
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+@import '~jquery-ui/themes/base/all.css';
+@import '~datatables/media/css/jquery.dataTables.css';
+
+//glyphicons
+.glyphicon-plus:before {
+  content: "\002b"
+}
+
+.glyphicon-minus:before {
+  content: "\2212"
+}
+
+body {
+  font-family: 'Didact Gothic', sans-serif;
+  font-size: 16px;
+  background-color: #051C38;
+}
+
+.sj-nav-bar {
+
+  .nav {
+    line-height: 35px;
+    width: auto;
+    background-color: #006a00;
+    overflow: hidden;
+    .nav-link.active {
+        background-color: #051C38;
+    }
+    .nav-link:hover {
+      background-color: #051C38;
+    }
+    span.authx {
+      margin-left: auto;
+    }
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+      color: white;
+    }
+  }
+}
+
+.footer {
+  background-color: #006a00;
+  color: white;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 3px;
+  font-variant-caps: normal;
+  margin-top: 15px;
+  line-height: 28px;
+  font-weight: 200;
+  list-style: none outside none;
+
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    color: white;
+  }
+}
+
+.card-body .inactive {
+  display: none;
+}
+
+.noborder {
+  border: none;
+}

@@ -1,0 +1,11 @@
+#update with your own key name and dns name
+rm ./wedding-planner.zip
+cp wedding-planner/.env.aws wedding-planner/.env
+zip -r wedding-planner.zip ./wedding-planner
+scp -i <key_name> ./wedding-planner.zip ec2-user@<dns_name>:/var/www/html/wedding-planner.zip
+ssh -t -i <key_name> ec2-user@<dns_name> 'unzip /var/www/html/wedding-planner.zip -d /var/www/html'
+ssh -t -i <key_name> ec2-user@<dns_name> 'sudo chmod -R 755 /var/www'
+ssh -t -i <key_name> ec2-user@<dns_name> 'sudo chmod -R 777 /var/www/html/wedding-planner/storage'
+ssh -t -i <key_name> ec2-user@<dns_name> 'php /var/www/html/wedding-planner/artisan migrate:fresh'
+ssh -t -i <key_name> ec2-user@<dns_name> 'php /var/www/html/wedding-planner/artisan db:seed'
+ssh -t -i <key_name> ec2-user@<dns_name> 'sudo service httpd restart'

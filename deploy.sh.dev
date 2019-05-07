@@ -1,0 +1,11 @@
+#ec2-54-174-138-237.compute-1.amazonaws.com
+cp wedding-planner/.env.aws wedding-planner/.env
+zip -q -r wedding-planner.zip ./wedding-planner
+chmod 400 ./st-julianas.pem
+scp -o StrictHostKeyChecking=no -i st-julianas.pem ./wedding-planner.zip ec2-user@ec2-54-174-138-237.compute-1.amazonaws.com:/var/www/html/wedding-planner.zip
+ssh -o StrictHostKeyChecking=no -t -i st-julianas.pem ec2-user@ec2-54-174-138-237.compute-1.amazonaws.com 'unzip -q -o /var/www/html/wedding-planner.zip -d /var/www/html'
+ssh -o StrictHostKeyChecking=no -t -i st-julianas.pem ec2-user@ec2-54-174-138-237.compute-1.amazonaws.com 'sudo chmod -R 755 /var/www'
+ssh -o StrictHostKeyChecking=no -t -i st-julianas.pem ec2-user@ec2-54-174-138-237.compute-1.amazonaws.com 'sudo chmod -R 777 /var/www/html/wedding-planner/storage'
+ssh -o StrictHostKeyChecking=no -t -i st-julianas.pem ec2-user@ec2-54-174-138-237.compute-1.amazonaws.com 'php /var/www/html/wedding-planner/artisan migrate:fresh'
+ssh -o StrictHostKeyChecking=no -t -i st-julianas.pem ec2-user@ec2-54-174-138-237.compute-1.amazonaws.com 'php /var/www/html/wedding-planner/artisan db:seed'
+ssh -o StrictHostKeyChecking=no -t -i st-julianas.pem ec2-user@ec2-54-174-138-237.compute-1.amazonaws.com 'sudo service httpd restart'

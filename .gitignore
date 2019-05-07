@@ -1,0 +1,8 @@
+/.idea
+/.vscode
+/wedding-planner.zip
+**/.DS_Store
+**/scratch.md
+/vendor
+**/*.pem
+**/deploy.sh
